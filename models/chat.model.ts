@@ -33,6 +33,6 @@ const chatSchema = new mongoose.Schema(
 );
 
 const Chat: Model<IChatDocument> =
-  mongoose.models.Chat || mongoose.model<IChatDocument>("Chat", chatSchema);
+  mongoose.models?.Chat || mongoose.model<IChatDocument>("Chat", chatSchema);
 
 export default Chat;

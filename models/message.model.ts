@@ -1,7 +1,7 @@
 import mongoose, { Model, Types } from "mongoose";
 
 interface IMessage {
-  roomId: String | number;
+  roomId: string | number;
   sender: Types.ObjectId;
   receiver: Types.ObjectId;
   content: string;
@@ -13,7 +13,7 @@ export interface IMessageDocument extends IMessage, mongoose.Document {
   updatedAt: Date;
 }
 
-const chatSchema = new mongoose.Schema(
+const messageSchema = new mongoose.Schema(
   {
     sender: {
       type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +40,7 @@ const chatSchema = new mongoose.Schema(
 );
 
 const Message: Model<IMessageDocument> =
-  mongoose.models?.Chat || mongoose.model<IMessageDocument>("Chat", chatSchema);
+  mongoose.models?.Message ||
+  mongoose.model<IMessageDocument>("Message", messageSchema);
 
 export default Message;

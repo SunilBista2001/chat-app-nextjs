@@ -1,27 +1,52 @@
-const ChatBody = () => {
+import { IMessageDocument } from "@/models/message.model";
+import { PopulatedDoc } from "mongoose";
+import { Session } from "next-auth";
+
+type ChatProps = {
+  messages: IMessageDocument[] | PopulatedDoc<IMessageDocument>[];
+  session: Session | null;
+};
+
+const ChatBody = ({ messages, session }: ChatProps) => {
+  const authUserId = session?.user?._id;
+
   return (
     <>
-      <header className="chat__mainHeader rounded-lg">
-        <p>Hangout with Colleagues</p>
-        <button className="leaveChat__btn">LEAVE CHAT</button>
-      </header>
-
       {/*This shows messages sent from you*/}
       <div className="message__container rounded-lg">
-        <div className="message__chats">
-          <p className="sender__name">You</p>
-          <div className="message__sender">
-            <p>Hello there</p>
-          </div>
-        </div>
+        {messages
+          ?.filter((message) => message?.sender === authUserId)
+          ?.map((message, idx) => {
+            const isPrevMessageSameSender =
+              idx > 0 && messages[idx - 1].sender === message.sender;
+
+            return (
+              <div key={idx} className="message__chats">
+                {!isPrevMessageSameSender && (
+                  <p className="sender__name text-white">You</p>
+                )}
+                <div className="message__sender rounded-t-2xl rounded-bl-2xl rounded-br-md text-sm ">
+                  <p>{message.content}</p>
+                </div>
+              </div>
+            );
+          })}
 
         {/*This shows messages received by you*/}
-        <div className="message__chats">
-          <p>Other</p>
-          <div className="message__recipient">
-            <p>Hey, I'm good, you?</p>
-          </div>
-        </div>
+        {messages
+          ?.filter((message) => message.sender !== authUserId)
+          ?.map((message, idx) => {
+            const isPrevMessageSameSender =
+              idx > 0 && messages[idx - 1].receiver === message.receiver;
+            return (
+              <div key={idx} className="message__chats">
+                {!isPrevMessageSameSender && <p>Other</p>}
+                <div className="message__recipient rounded-t-2xl rounded-br-2xl rounded-bl-md text-sm">
+                  <p>{message.content}</p>
+                </div>
+              </div>
+            );
+          })}
       </div>
     </>
   );

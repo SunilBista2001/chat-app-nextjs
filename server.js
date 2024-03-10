@@ -1,5 +1,5 @@
-import { createServer } from "http";
-import { Server } from "socket.io";
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const httpServer = createServer();
 
@@ -7,16 +7,22 @@ const PORT = process.env.SOCKET_PORT || 3001;
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["*"],
-    credentials: true,
+    origin: "http://localhost:3000", // Replace with your frontend URL
+    withCredentials: true,
   },
 });
 
 io.on("connection", (socket) => {
-  console.log(`${socket.id} a user connected`);
-  io.on("disconnect", () => {
-    console.log("user disconnected");
+  console.log("A user connected:", socket.id);
+
+  socket.on("send_msg", (data) => {
+    console.log(data, "DATA");
+    //This will send a message to a specific room ID
+    // socket.to(data.roomId).emit("receive_msg", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected:", socket.id);
   });
 });
 
