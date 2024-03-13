@@ -33,12 +33,16 @@ const ChatBar = async () => {
               <Avatar className="text-black">
                 <AvatarImage src={user.avatar} />
                 <AvatarFallback>
-                  {user.username.charAt(0).toUpperCase() +
-                    "" +
-                    user.username.split(" ")[1].charAt(0).toUpperCase()}
+                  {user.username.split(" ") &&
+                    user.username.charAt(0)?.toUpperCase() +
+                      "" +
+                      user.username.split(" ")[1]?.charAt(0)?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span>{user.username}</span>
+              <div className="">
+                <span>{user.username}</span>
+                <p className="text-gray-500 text-xs">Active Now</p>
+              </div>
             </Link>
           ))}
         </div>
