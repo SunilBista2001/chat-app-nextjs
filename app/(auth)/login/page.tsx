@@ -1,22 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { signIn } from "@/lib/auth";
-import { Github } from "lucide-react";
+import LoginCard from "./LoginCard";
 
-const LoginPage = () => {
-  const handleAuthAction = async () => {
-    "use server";
-    await signIn("github");
-  };
-
+export default async function Login() {
   return (
-    <form action={handleAuthAction}>
-      <h1>Login to Chat APP</h1>
-      <Button type="submit">
-        <Github size={24} />
-        Login with GitHub
-      </Button>
-    </form>
+    <div className="flex flex-col p-8 shadow-xl bg-white rounded-md">
+      <h1 className="text-2xl font-bold text-center mb-4">
+        Log in to Chat App
+      </h1>
+      <LoginCard />
+    </div>
   );
-};
-
-export default LoginPage;
+}

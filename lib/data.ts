@@ -28,9 +28,11 @@ export const getMessages = async (authUserId: string, receiverId: string) => {
 
     const chat: IChatDocument | null = await Chat.findOne({
       participants: {
-        $all: [authUserId, receiverId],
+        $all: [receiverId, authUserId],
       },
-    }).populate("messages");
+    })
+      .populate("messages")
+      .exec();
 
     if (!chat) return [];
 

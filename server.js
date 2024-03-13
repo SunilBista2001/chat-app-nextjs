@@ -16,9 +16,7 @@ io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
   socket.on("send_msg", (data) => {
-    console.log(data, "DATA");
-    //This will send a message to a specific room ID
-    // socket.to(data.roomId).emit("receive_msg", data);
+    console.log("messageResponse", data);
   });
 
   socket.on("disconnect", () => {

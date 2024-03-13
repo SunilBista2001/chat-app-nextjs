@@ -1,17 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { authAction } from "@/lib/actions";
-import { Github } from "lucide-react";
+import RegisterCard from "./RegisterCard";
 
-const RegisterPage = () => {
+export default async function Register() {
   return (
-    <form action={authAction}>
-      <h1>Login to Chat APP</h1>
-      <Button type="submit">
-        <Github size={24} />
-        Login with GitHub
-      </Button>
-    </form>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="p-8 bg-white rounded-lg shadow-md min-w-80">
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Sign up to Chat App
+        </h1>
+        <RegisterCard />
+      </div>
+    </div>
   );
-};
-
-export default RegisterPage;
+}

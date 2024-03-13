@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useMessage from "@/hooks/useMessage";
 import useSocket from "@/hooks/useSocket";
 import { sendMessageAction } from "@/lib/actions";
 import { File, Loader2, SendHorizonal } from "lucide-react";
@@ -10,6 +11,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 const ChatFooter = ({ session }: { session: Session }) => {
+  const messageState = useMessage();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const { id } = useParams<{ id: string }>();
@@ -28,6 +30,10 @@ const ChatFooter = ({ session }: { session: Session }) => {
         content: message,
         opened: false,
       };
+
+      // @ts-ignore
+      messageState.addMessage(msgData);
+
       await socket.emit("send_msg", msgData);
     } catch (error) {
       setIsLoading(false);
@@ -41,9 +47,9 @@ const ChatFooter = ({ session }: { session: Session }) => {
   return (
     <div className="chat__footer rounded-lg">
       <form className="form space-x-2" onSubmit={sendMessage}>
-        <Button variant={"secondary"}>
+        {/* <Button variant={"secondary"}>
           <File size={24} />
-        </Button>
+        </Button> */}
         <Input
           placeholder="Write message"
           className="message"

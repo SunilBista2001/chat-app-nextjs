@@ -18,7 +18,7 @@ export const authConfig = {
 
       const isVisitingChatPage =
         request.nextUrl.pathname === "/" ||
-        request.nextUrl.pathname === "/chat";
+        request.nextUrl.pathname.startsWith("/chat");
 
       const isVisitingAuthPage =
         request.nextUrl.pathname === "/login" ||

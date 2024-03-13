@@ -1,15 +1,23 @@
 "use server";
 
 import Chat, { IChatDocument } from "@/models/chat.model";
-import { auth, signIn } from "./auth";
+import { auth, signIn, signOut } from "./auth";
 import Message, { IMessageDocument } from "@/models/message.model";
+import { revalidatePath } from "next/cache";
 
 export const authAction = async () => {
   try {
     await signIn("github");
-  } catch (error) {
-    console.log("error in loginAction: ", error);
+  } catch (error: any) {
+    if (error.message === "NEXT_REDIRECT") {
+      throw error;
+    }
+    return error.message;
   }
+};
+
+export const logoutAction = async () => {
+  await signOut();
 };
 
 export const sendMessageAction = async (
@@ -45,6 +53,8 @@ export const sendMessageAction = async (
       );
       await isChatExist?.save();
     }
+
+    revalidatePath(`/chat/${receiverId}`);
   } catch (error) {
     console.log("error in sendMessage from SS: ", error);
   }

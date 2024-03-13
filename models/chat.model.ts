@@ -1,10 +1,11 @@
-import mongoose, { Model, PopulatedDoc } from "mongoose";
+import mongoose, { PopulatedDoc } from "mongoose";
 import { IUserDocument } from "./user.model";
 import { IMessageDocument } from "./message.model";
+import { Types } from "mongoose";
 
 interface IChat {
-  participants: mongoose.Types.ObjectId[] | PopulatedDoc<IUserDocument>;
-  messages: mongoose.Types.ObjectId[] | PopulatedDoc<IMessageDocument>;
+  participants: Types.ObjectId[] | PopulatedDoc<IUserDocument>;
+  messages: Types.ObjectId[] | PopulatedDoc<IMessageDocument>;
 }
 
 export interface IChatDocument extends IChat, mongoose.Document {
@@ -32,7 +33,7 @@ const chatSchema = new mongoose.Schema(
   }
 );
 
-const Chat: Model<IChatDocument> =
+const Chat =
   mongoose.models?.Chat || mongoose.model<IChatDocument>("Chat", chatSchema);
 
 export default Chat;
